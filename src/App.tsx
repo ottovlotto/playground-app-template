@@ -1,0 +1,146 @@
+import { useEffect, useState } from "react";
+import { signerManager, useSignerState, short, toHex } from "./utils.ts";
+
+export default function App() {
+    const { status, accounts, selectedAccount, error } = useSignerState();
+
+    useEffect(() => {
+        signerManager.connect().then(result => {
+            if (result.ok && result.value.length > 0) {
+                signerManager.selectAccount(result.value[0].address);
+            }
+        });
+    }, []);
+
+    if (status === "connecting") {
+        return <div className="spinner">Connecting wallet...</div>;
+    }
+
+    return (
+        <>
+            <header>
+                <h1>Polkadot Playground</h1>
+                {accounts.length > 0 ? (
+                    <select
+                        className="account-select"
+                        value={selectedAccount?.address ?? ""}
+                        onChange={e => signerManager.selectAccount(e.target.value)}
+                    >
+                        {accounts.map(acc => (
+                            <option key={acc.address} value={acc.address}>
+                                {acc.name ?? short(acc.address)} ({acc.source})
+                            </option>
+                        ))}
+                    </select>
+                ) : (
+                    <span className="account-select">{error?.message ?? "No accounts"}</span>
+                )}
+            </header>
+
+            <main className="main">
+                {accounts.length > 0 ? (
+                    <AccountPanel />
+                ) : (
+                    <p className="hint">
+                        Open this app in <strong>Polkadot Desktop</strong> to connect a wallet via Host API.
+                    </p>
+                )}
+                <ModItCard />
+            </main>
+        </>
+    );
+}
+
+function AccountPanel() {
+    const { selectedAccount } = useSignerState();
+    if (!selectedAccount) return null;
+
+    return (
+        <div className="panel">
+            <Field label="SS58 address" value={selectedAccount.address} />
+            <Field label="EVM address (H160)" value={selectedAccount.h160Address} />
+            <SignDemo />
+        </div>
+    );
+}
+
+function ModItCard() {
+    return (
+        <section className="mod-card">
+            <h2>Mod this app</h2>
+            <p>
+                You're looking at the <strong>playground template</strong> live at{" "}
+                <a href="https://playground.dot.li" target="_blank" rel="noreferrer">playground.dot.li</a>{" "}
+                — a minimal React + Vite + TypeScript starting point wired to the Polkadot Host API.
+                Fork it, gut the account panel, and turn it into your own dapp.
+            </p>
+            <ul>
+                <li>Replace the sign demo with whatever your app actually does.</li>
+                <li>Add <code>polkadot-api</code> for chain RPC, <code>@polkadot-apps/bulletin</code> for off-chain storage,
+                    or <code>@dotdm/cdm</code> for smart contracts.</li>
+                <li>Run <code>dot deploy</code> to publish your fork to <code>&lt;name&gt;.dot</code> — no servers, no hosting bill.</li>
+            </ul>
+        </section>
+    );
+}
+
+function Field({ label, value }: { label: string; value: string }) {
+    const [copied, setCopied] = useState(false);
+    const copy = () => {
+        navigator.clipboard.writeText(value);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
+    };
+    return (
+        <div className="field">
+            <span className="field-label">{label}</span>
+            <button className="field-value" onClick={copy} title="Click to copy">
+                <span className="mono">{value}</span>
+                <span className="field-copy">{copied ? "copied" : "copy"}</span>
+            </button>
+        </div>
+    );
+}
+
+function SignDemo() {
+    const [message, setMessage] = useState("Hello from the Polkadot Playground");
+    const [signature, setSignature] = useState<string | null>(null);
+    const [signError, setSignError] = useState<string | null>(null);
+    const [busy, setBusy] = useState(false);
+
+    const sign = async () => {
+        setBusy(true);
+        setSignature(null);
+        setSignError(null);
+        const bytes = new TextEncoder().encode(message);
+        const result = await signerManager.signRaw(bytes);
+        if (result.ok) {
+            setSignature(toHex(result.value));
+        } else {
+            setSignError(result.error.message);
+        }
+        setBusy(false);
+    };
+
+    return (
+        <div className="sign-demo">
+            <span className="field-label">Sign a message</span>
+            <input
+                className="text-input"
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                disabled={busy}
+            />
+            <button className="btn btn-primary" onClick={sign} disabled={busy || !message}>
+                {busy ? "Signing..." : "Sign"}
+            </button>
+            {signature && (
+                <div className="signature">
+                    <span className="field-label">Signature</span>
+                    <code className="mono signature-value">{signature}</code>
+                </div>
+            )}
+            {signError && <p className="error">{signError}</p>}
+        </div>
+    );
+}
