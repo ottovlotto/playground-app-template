@@ -1,12 +1,12 @@
 # Polkadot Playground — agent guidance
 
-A minimal Polkadot dapp template: React 19 + Vite + TypeScript, wired to Host API for wallet login. Use this as a starting point for building Polkadot apps.
+A minimal Polkadot dapp template: React 19 + Vite + TypeScript, wired to the Host API to obtain accounts and signatures from Polkadot Desktop. Use this as a starting point for building Polkadot apps.
 
 ## Polkadot stack
 
 | Layer | Package |
 |-------|---------|
-| Wallet / signer | `@polkadot-apps/signer` |
+| Signer / accounts | `@polkadot-apps/signer` |
 | Host API | `@novasamatech/host-api` (Polkadot Desktop only) |
 | Low-level RPC | `polkadot-api` (add when you need it) |
 

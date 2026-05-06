@@ -1,6 +1,6 @@
 # Polkadot Playground
 
-Minimal React + Vite + TypeScript template wired to Host API for Polkadot wallet login. A starting point for building Polkadot dapps.
+Minimal React + Vite + TypeScript template wired to the Host API for account access from Polkadot Desktop. A starting point for building Polkadot dapps.
 
 A live deployment runs at [**playground.dot.li**](https://playground.dot.li) — open it inside Polkadot Desktop to see the template connect to the Host API, surface your SS58 + EVM (H160) addresses, and sign a message end-to-end.
 

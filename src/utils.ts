@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { SignerManager, type SignerState } from "@polkadot-apps/signer";
-
-// ---------------------------------------------------------------------------
-// Signer Manager (Host API)
-// ---------------------------------------------------------------------------
+import { hostApi } from "@novasamatech/product-sdk";
 
 export const signerManager = new SignerManager({ dappName: "playground-template" });
 
@@ -16,11 +13,11 @@ export function useSignerState(): SignerState {
     return state;
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-export const short = (addr: string) => addr.slice(0, 6) + "..." + addr.slice(-4);
-
-export const toHex = (bytes: Uint8Array) =>
-    "0x" + Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("");
+export async function openExternalLink(url: string) {
+    if (signerManager.getState().activeProvider !== "host") {
+        window.open(url, "_blank");
+        return;
+    }
+    const result = await hostApi.navigateTo({ tag: "v1", value: url });
+    if (result.isErr()) window.open(url, "_blank");
+}

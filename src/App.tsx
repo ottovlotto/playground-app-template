@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import { signerManager, useSignerState, short, toHex } from "./utils.ts";
+import { truncateAddress } from "@polkadot-apps/address";
+import { bytesToHex, utf8ToBytes } from "@polkadot-apps/utils";
+import type { SignerAccount } from "@polkadot-apps/signer";
+import { signerManager, useSignerState, openExternalLink } from "./utils.ts";
+
+const PLAYGROUND_URL = "https://playground.dot";
 
 export default function App() {
-    const { status, accounts, selectedAccount, error } = useSignerState();
+    const { status, selectedAccount, error } = useSignerState();
 
     useEffect(() => {
         signerManager.connect().then(result => {
@@ -13,36 +18,26 @@ export default function App() {
     }, []);
 
     if (status === "connecting") {
-        return <div className="spinner">Connecting wallet...</div>;
+        return <div className="spinner">Connecting...</div>;
     }
 
     return (
         <>
             <header>
                 <h1>Polkadot Playground</h1>
-                {accounts.length > 0 ? (
-                    <select
-                        className="account-select"
-                        value={selectedAccount?.address ?? ""}
-                        onChange={e => signerManager.selectAccount(e.target.value)}
-                    >
-                        {accounts.map(acc => (
-                            <option key={acc.address} value={acc.address}>
-                                {acc.name ?? short(acc.address)} ({acc.source})
-                            </option>
-                        ))}
-                    </select>
-                ) : (
-                    <span className="account-select">{error?.message ?? "No accounts"}</span>
+                {selectedAccount && (
+                    <span className={`address-chip${selectedAccount.name ? "" : " mono"}`}>
+                        {selectedAccount.name ?? truncateAddress(selectedAccount.address)}
+                    </span>
                 )}
             </header>
 
             <main className="main">
-                {accounts.length > 0 ? (
-                    <AccountPanel />
+                {selectedAccount ? (
+                    <AccountPanel account={selectedAccount} />
                 ) : (
                     <p className="hint">
-                        Open this app in <strong>Polkadot Desktop</strong> to connect a wallet via Host API.
+                        {error?.message ?? <>Open this app in <strong>Polkadot Desktop</strong> to access your accounts via the Host API.</>}
                     </p>
                 )}
                 <ModItCard />
@@ -51,14 +46,11 @@ export default function App() {
     );
 }
 
-function AccountPanel() {
-    const { selectedAccount } = useSignerState();
-    if (!selectedAccount) return null;
-
+function AccountPanel({ account }: { account: SignerAccount }) {
     return (
         <div className="panel">
-            <Field label="SS58 address" value={selectedAccount.address} />
-            <Field label="EVM address (H160)" value={selectedAccount.h160Address} />
+            <Field label="SS58 address" value={account.address} />
+            <Field label="EVM address (H160)" value={account.h160Address} />
             <SignDemo />
         </div>
     );
@@ -70,13 +62,17 @@ function ModItCard() {
             <h2>Mod this app</h2>
             <p>
                 You're looking at the <strong>playground template</strong> live at{" "}
-                <a href="https://playground.dot.li" target="_blank" rel="noreferrer">playground.dot.li</a>{" "}
+                <a
+                    href={PLAYGROUND_URL}
+                    onClick={e => { e.preventDefault(); openExternalLink(PLAYGROUND_URL); }}
+                >playground.dot</a>{" "}
                 — a minimal React + Vite + TypeScript starting point wired to the Polkadot Host API.
                 Fork it, gut the account panel, and turn it into your own dapp.
             </p>
             <ul>
                 <li>Replace the sign demo with whatever your app actually does.</li>
-                <li>Add <code>polkadot-api</code> for chain RPC, <code>@polkadot-apps/bulletin</code> for off-chain storage,
+                <li>Tap deeper into the host env: <code>@polkadot-apps/bulletin</code> for off-chain storage,
+                    <code>@polkadot-apps/statement-store</code> for real-time P2P pub/sub,
                     or <code>@dotdm/cdm</code> for smart contracts.</li>
                 <li>Run <code>dot deploy</code> to publish your fork to <code>&lt;name&gt;.dot</code> — no servers, no hosting bill.</li>
             </ul>
@@ -112,10 +108,9 @@ function SignDemo() {
         setBusy(true);
         setSignature(null);
         setSignError(null);
-        const bytes = new TextEncoder().encode(message);
-        const result = await signerManager.signRaw(bytes);
+        const result = await signerManager.signRaw(utf8ToBytes(message));
         if (result.ok) {
-            setSignature(toHex(result.value));
+            setSignature("0x" + bytesToHex(result.value));
         } else {
             setSignError(result.error.message);
         }
