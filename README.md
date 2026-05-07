@@ -1,8 +1,8 @@
 # Polkadot Playground
 
-Minimal React + Vite + TypeScript template wired to the Host API for account access from Polkadot Desktop. A starting point for building Polkadot dapps.
+Minimal React + Vite + TypeScript template wired to the Host API for product-account access from Polkadot Desktop. A starting point for building Polkadot dapps.
 
-A live deployment runs at [**playground.dot.li**](https://playground.dot.li) — open it inside Polkadot Desktop to see the template connect to the Host API, surface your SS58 + EVM (H160) addresses, and sign a message end-to-end.
+A live deployment runs at [**playground.dot.li**](https://playground.dot.li) — open it inside Polkadot Desktop to see the template connect to the Host API, surface the app-scoped product account's SS58 + EVM (H160) addresses, and sign a message end-to-end.
 
 ## Mod it
 
@@ -17,8 +17,9 @@ When you're ready, deploy your fork to your own `<name>.dot` domain (see below) 
 ## Stack
 
 - **React 19** + **Vite** + **TypeScript**
-- **`@parity/product-sdk-signer`** — Host API login
+- **`@parity/product-sdk-signer`** — Host signer management and app-scoped product-account signing
 - **`@parity/product-sdk-host`** — TruAPI helpers for Polkadot Desktop
+- **`@novasamatech/product-sdk`** — TruAPI runtime used underneath the Product SDK packages
 
 ## Running
 
@@ -29,12 +30,14 @@ npm run dev
 
 Runs on `http://localhost:5173`. Must be opened inside **Polkadot Desktop** for Host API login to work.
 
+Product-account signing is scoped to the host's current app identifier. Local dev uses the current loopback host, e.g. `localhost:5173`; `.dot.li` gateway URLs are mapped back to their `.dot` product id. Set `VITE_PRODUCT_ACCOUNT_ID` when you need an explicit override.
+
 ## Structure
 
 ```
 src/
-├── App.tsx       # Header + account selector + your app shell
-├── utils.ts      # SignerManager + small helpers
+├── App.tsx       # Header + product account panel + your app shell
+├── utils.ts      # Product SDK signer wrapper + small helpers
 └── main.tsx      # Vite entry
 ```
 

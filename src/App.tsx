@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { truncateAddress } from "@parity/product-sdk-address";
 import { bytesToHex, utf8ToBytes } from "@parity/product-sdk-utils";
-import type { SignerAccount } from "@parity/product-sdk-signer";
-import { signerManager, useSignerState, openExternalLink } from "./utils.ts";
+import {
+    getProductAccountIdentifier,
+    signerManager,
+    useSignerState,
+    openExternalLink,
+    type SignerAccount,
+} from "./utils.ts";
 
 const PLAYGROUND_URL = "https://playground.dot";
 
@@ -49,6 +54,7 @@ export default function App() {
 function AccountPanel({ account }: { account: SignerAccount }) {
     return (
         <div className="panel">
+            <Field label="Product identifier" value={getProductAccountIdentifier()} />
             <Field label="SS58 address" value={account.address} />
             <Field label="EVM address (H160)" value={account.h160Address} />
             <SignDemo />
