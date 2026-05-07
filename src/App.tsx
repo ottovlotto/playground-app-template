@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { truncateAddress } from "@polkadot-apps/address";
-import { bytesToHex, utf8ToBytes } from "@polkadot-apps/utils";
-import type { SignerAccount } from "@polkadot-apps/signer";
+import { truncateAddress } from "@parity/product-sdk-address";
+import { bytesToHex, utf8ToBytes } from "@parity/product-sdk-utils";
+import type { SignerAccount } from "@parity/product-sdk-signer";
 import { signerManager, useSignerState, openExternalLink } from "./utils.ts";
 
 const PLAYGROUND_URL = "https://playground.dot";
@@ -71,9 +71,9 @@ function ModItCard() {
             </p>
             <ul>
                 <li>Replace the sign demo with whatever your app actually does.</li>
-                <li>Tap deeper into the host env: <code>@polkadot-apps/bulletin</code> for off-chain storage,
-                    <code>@polkadot-apps/statement-store</code> for real-time P2P pub/sub,
-                    or <code>@dotdm/cdm</code> for smart contracts.</li>
+                <li>Tap deeper into the host env: <code>@parity/product-sdk-bulletin</code> for off-chain storage,
+                    <code>@parity/product-sdk-statement-store</code> for real-time P2P pub/sub,
+                    or <code>@parity/product-sdk-contracts</code> for smart contracts.</li>
                 <li>Run <code>dot deploy</code> to publish your fork to <code>&lt;name&gt;.dot</code> — no servers, no hosting bill.</li>
             </ul>
         </section>

@@ -10,14 +10,15 @@ This repo is meant to be forked, gutted, and turned into your own dapp. The piec
 
 - **Account panel** ([src/App.tsx](src/App.tsx)) — replace the address display + sign demo with whatever your app actually does. The `SignDemo` component is a working reference for calling `signerManager.signRaw(...)` once you have a selected account.
 - **App shell** ([src/App.tsx](src/App.tsx), [src/App.css](src/App.css)) — header, layout, and theme are intentionally tiny so you can rip them out. The `#root { max-width: 520px }` cap is just a default; widen or remove it for dashboards / multi-column layouts.
-- **Stack additions** — `polkadot-api` for chain RPC, `@polkadot-apps/bulletin` for off-chain storage, `@dotdm/cdm` for smart contracts, `@polkadot-apps/statement-store` for P2P pub/sub. See [CLAUDE.md](CLAUDE.md) for the full stack table.
+- **Stack additions** — `@parity/product-sdk-chain-client` for chain RPC, `@parity/product-sdk-bulletin` for off-chain storage, `@parity/product-sdk-contracts` for smart contracts, `@parity/product-sdk-statement-store` for P2P pub/sub. See [CLAUDE.md](CLAUDE.md) for the full stack table.
 
 When you're ready, deploy your fork to your own `<name>.dot` domain (see below) — no servers, no hosting bill.
 
 ## Stack
 
 - **React 19** + **Vite** + **TypeScript**
-- **`@polkadot-apps/signer`** — Host API login
+- **`@parity/product-sdk-signer`** — Host API login
+- **`@parity/product-sdk-host`** — TruAPI helpers for Polkadot Desktop
 
 ## Running
 

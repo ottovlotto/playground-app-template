@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { SignerManager, type SignerState } from "@polkadot-apps/signer";
-import { hostApi } from "@novasamatech/product-sdk";
+import { SignerManager, type SignerState } from "@parity/product-sdk-signer";
+import { getTruApi } from "@parity/product-sdk-host";
 
 export const signerManager = new SignerManager({ dappName: "playground-template" });
 
@@ -18,6 +18,15 @@ export async function openExternalLink(url: string) {
         window.open(url, "_blank");
         return;
     }
-    const result = await hostApi.navigateTo({ tag: "v1", value: url });
-    if (result.isErr()) window.open(url, "_blank");
+    const truApi = await getTruApi();
+    if (!truApi) {
+        window.open(url, "_blank");
+        return;
+    }
+    try {
+        const result = await truApi.navigateTo(url);
+        if (result.isErr()) window.open(url, "_blank");
+    } catch {
+        window.open(url, "_blank");
+    }
 }

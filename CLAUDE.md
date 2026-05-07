@@ -6,15 +6,16 @@ A minimal Polkadot dapp template: React 19 + Vite + TypeScript, wired to the Hos
 
 | Layer | Package |
 |-------|---------|
-| Signer / accounts | `@polkadot-apps/signer` |
-| Host API | `@novasamatech/host-api` (Polkadot Desktop only) |
-| Low-level RPC | `polkadot-api` (add when you need it) |
+| Signer / accounts | `@parity/product-sdk-signer` |
+| Host / TruAPI helpers | `@parity/product-sdk-host` (Polkadot Desktop only) |
+| Chain RPC | `@parity/product-sdk-chain-client` (add with descriptors when you need it) |
 
 Other packages worth knowing about for richer apps:
 
-- `@polkadot-apps/bulletin` — IPFS-style off-chain storage
-- `@dotdm/cdm` — smart contract toolchain (Rust/PVM)
-- `@polkadot-apps/statement-store` — real-time P2P pub/sub
+- `@parity/product-sdk-bulletin` — IPFS-style off-chain storage
+- `@parity/product-sdk-contracts` — smart contract helpers
+- `@parity/product-sdk-statement-store` — real-time P2P pub/sub
+- `@parity/product-sdk-tx` — transaction submission helpers
 
 ## Landmarks
 

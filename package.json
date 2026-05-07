@@ -10,13 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@novasamatech/host-api": "^0.6.17",
-    "@novasamatech/product-sdk": "^0.6.17",
-    "@polkadot-apps/address": "^0.4.0",
-    "@polkadot-apps/signer": "^1.1.0",
-    "@polkadot-apps/utils": "^0.4.0",
+    "@novasamatech/host-api": "0.7.7",
+    "@novasamatech/product-sdk": "0.7.7",
+    "@parity/product-sdk-address": "^0.1.0",
+    "@parity/product-sdk-host": "^0.1.0",
+    "@parity/product-sdk-signer": "^0.1.0",
+    "@parity/product-sdk-utils": "^0.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "overrides": {
+    "@novasamatech/host-api": "0.7.7",
+    "@novasamatech/product-sdk": "0.7.7"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
