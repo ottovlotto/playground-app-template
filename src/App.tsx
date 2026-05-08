@@ -4,8 +4,11 @@ import { bytesToHex, utf8ToBytes } from "@parity/product-sdk-utils";
 import {
     getProductAccountIdentifier,
     signerManager,
+    useResourceAllocationState,
     useSignerState,
     openExternalLink,
+    type ResourceAllocationKind,
+    type ResourceAllocationOutcome,
     type SignerAccount,
 } from "./utils.ts";
 
@@ -57,7 +60,57 @@ function AccountPanel({ account }: { account: SignerAccount }) {
             <Field label="Product identifier" value={getProductAccountIdentifier()} />
             <Field label="SS58 address" value={account.address} />
             <Field label="EVM address (H160)" value={account.h160Address} />
+            <ResourceAllocationPanel />
             <SignDemo />
+        </div>
+    );
+}
+
+const RESOURCE_LABELS: Record<ResourceAllocationKind, string> = {
+    StatementStoreAllowance: "Statement store",
+    BulletInAllowance: "Bulletin",
+    SmartContractAllowance: "Smart contracts",
+    AutoSigning: "Auto-signing",
+};
+
+const OUTCOME_LABELS: Record<ResourceAllocationOutcome, string> = {
+    Allocated: "Allocated",
+    Rejected: "Rejected",
+    NotAvailable: "Not available",
+};
+
+function ResourceAllocationPanel() {
+    const allocation = useResourceAllocationState();
+    const status =
+        allocation.status === "idle"
+            ? "Waiting"
+            : allocation.status === "requesting"
+              ? "Requesting"
+              : allocation.status === "complete"
+                ? "Complete"
+                : allocation.status === "unavailable"
+                  ? "Unavailable"
+                  : "Failed";
+
+    return (
+        <div className="resource-panel">
+            <div className="resource-heading">
+                <span className="field-label">Host resources</span>
+                <span className={`resource-status resource-status-${allocation.status}`}>
+                    {status}
+                </span>
+            </div>
+            <div className="resource-list">
+                {allocation.entries.map(entry => (
+                    <div className="resource-row" key={entry.resource}>
+                        <span>{RESOURCE_LABELS[entry.resource]}</span>
+                        <span className={`resource-badge resource-badge-${entry.outcome ?? "pending"}`}>
+                            {entry.outcome ? OUTCOME_LABELS[entry.outcome] : "Pending"}
+                        </span>
+                    </div>
+                ))}
+            </div>
+            {allocation.error && <p className="error">{allocation.error}</p>}
         </div>
     );
 }
