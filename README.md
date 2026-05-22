@@ -49,3 +49,45 @@ A `/deploy <name>` slash command is wired up for Claude Code users — it runs `
 npm run build
 dot deploy --no-build --buildDir dist --domain <name>.dot --signer phone --playground
 ```
+
+## Ideas for modding
+
+### Beginner — UI and frontend
+
+- Reskin it — change colours, typography, visual style
+- Rename everything — app name, labels, descriptions
+- Add a tagline and hero section
+- Make it mobile-first
+- Add dark/light mode toggle
+- Add a second language
+- Design a custom empty state
+
+### Intermediate — storage and data
+
+- Add a new data field stored on decentralised storage
+- Add rich text editing
+- Add image upload stored on decentralised storage
+- Add a comments section using Statement Store
+- Add client-side search and filter
+- Add pagination
+- Add timestamps
+- Add data export as JSON
+
+### Advanced — smart contracts (requires CDM/Rust, laptop required)
+
+- Enforce a character limit at contract level
+- Add item expiry after a set number of blocks
+- Add a cap on total submissions
+- Add PoP gating — only verified humans can participate
+- Add an allowlist of approved accounts
+- Add an admin-only moderation function
+- Change the voting or selection mechanic
+- Add a contract event so the UI can react in real time
+- Require multi-sig approval
+
+### Advanced — multiplayer and cross-account
+
+- Add a challenge mechanic via Statement Store
+- Add an on-chain leaderboard
+- Add Statement Store notifications
+- Add a tipping mechanic using PGAS
