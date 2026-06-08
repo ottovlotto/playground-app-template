@@ -95,3 +95,21 @@ dot deploy --no-build --buildDir dist --domain <name>.dot --signer phone --playg
 - Add an on-chain leaderboard
 - Add Statement Store notifications
 - Add a tipping mechanic using PGAS
+
+## Security
+
+This is a reference proof-of-concept, **not a hardened production build**. Before
+deploying it for any real use case, you are responsible for:
+
+- Reviewing the code yourself.
+- Checking that dependencies are up to date and free of known vulnerabilities.
+- Securing your own fork or deployment environment (keys, secrets, network configuration).
+- Tracking the latest tagged release / commits for security fixes — older releases
+  are not backported (exceptions might apply).
+
+For Parity's security disclosure process and Bug Bounty program, see
+[parity.io/bug-bounty](https://parity.io/bug-bounty).
+
+## License
+
+Licensed under the [GNU General Public License v3.0 or later](./LICENSE) (`GPL-3.0-or-later`).
