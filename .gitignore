@@ -2,3 +2,14 @@ node_modules/
 dist/
 *.tsbuildinfo
 *.car
+
+# Environment files (never commit real credentials)
+.env*
+!.env.example
+
+# OS noise
+.DS_Store
+
+# Local AI session state (keep shared .claude/commands and CLAUDE.md tracked)
+.claude/settings.local.json
+.claude/projects/
