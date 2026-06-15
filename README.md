@@ -54,7 +54,7 @@ src/
 
 ## Deploying
 
-A `/deploy <name>` slash command is wired up for Claude Code users — it runs `playground deploy` against `<name>.dot` using the phone signer. Standalone:
+A `/deploy <name>` slash command is wired up for Claude Code users — it runs `playground deploy` (the [Playground CLI](https://github.com/paritytech/playground-cli)) against `<name>.dot` using the phone signer. Standalone:
 
 ```bash
 npm run build
@@ -84,7 +84,7 @@ playground deploy --no-build --buildDir dist --domain <name>.dot --signer phone 
 - Add timestamps
 - Add data export as JSON
 
-### Advanced — smart contracts (requires CDM/Rust, laptop required)
+### Advanced — smart contracts (requires [CDM](https://github.com/paritytech/contract-dependency-manager)/Rust, laptop required)
 
 - Enforce a character limit at contract level
 - Add item expiry after a set number of blocks

@@ -90,11 +90,14 @@ This template is **frontend-only** — there is no contract. If you add one:
 - Write it in **Rust** and compile to **PVM (PolkaVM)** for `pallet-revive` — this
   is the Polkadot Hub contract runtime. Do **not** target EVM/Solidity or legacy
   ink!/WASM.
-- Manage contract dependencies with the **CDM (Contracts Dependency Manager)** —
-  the `@parity/cdm-*` toolchain and a `cdm.json` manifest — and build with
+- Manage contract dependencies with the **CDM (Contract Dependency Manager,
+  [paritytech/contract-dependency-manager](https://github.com/paritytech/contract-dependency-manager))**
+  — the `@parity/cdm-*` toolchain and a `cdm.json` manifest — and build with
   **cargo**. A Rust toolchain (and a laptop) is required; this is not a
-  browser-only flow.
-- `playground deploy` runs a **contract deploy/install pre-step** automatically
+  browser-only flow. See the CDM repo for the manifest schema and commands.
+- `playground deploy` (the `playground` CLI —
+  [paritytech/playground-cli](https://github.com/paritytech/playground-cli))
+  runs a **contract deploy/install pre-step** automatically
   (pass `--no-contracts` to skip it). Let the CLI handle on-chain contract
   deployment; don't hand-roll `pallet-revive` calls.
 - The `product-sdk-contracts` skill in `.claude/skills/` covers calling contracts

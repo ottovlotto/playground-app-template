@@ -8,7 +8,7 @@ a phone.
 This template is **frontend-only** — there's no smart contract, so no Rust
 toolchain or contract build to set up. One tool does all the work:
 
-- **Playground CLI** (`playground`, short alias `pg`) builds the frontend,
+- **[Playground CLI](https://github.com/paritytech/playground-cli)** (`playground`, short alias `pg`) builds the frontend,
   uploads it to Bulletin Chain, registers your `.dot` name, and (optionally)
   publishes the app to the playground registry so it shows up in the Apps
   grid.
