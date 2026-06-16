@@ -15,7 +15,7 @@ import {
 const PLAYGROUND_URL = "https://playground.dot";
 
 export default function App() {
-    const { status, selectedAccount, error } = useSignerState();
+    const { status, selectedAccount } = useSignerState();
 
     useEffect(() => {
         signerManager.connect().then(result => {
@@ -45,7 +45,7 @@ export default function App() {
                     <AccountPanel account={selectedAccount} />
                 ) : (
                     <p className="hint">
-                        {error?.message ?? <>Open this app in a <strong>Polkadot host</strong> (Mobile, Desktop, or Web) to access your accounts via the Host API.</>}
+                        You need to log into Polkadot first — either view this page within a <strong>Polkadot host</strong> (Desktop or browser), or log in in the preview on RevX.
                     </p>
                 )}
                 <ModItCard />
